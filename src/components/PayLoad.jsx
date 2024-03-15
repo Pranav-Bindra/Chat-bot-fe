@@ -6,7 +6,7 @@ export const PayLoad = ({setResponse}) => {
 
     const sendMessage = async () => {
         try {
-            const res = await axios.post('https://znzfo75yw5.execute-api.us-east-1.amazonaws.com/chat', { message: text });
+            const res = await axios.post('https://vfb56z3gv6.execute-api.us-east-1.amazonaws.com/chat', { message: text });
             setResponse(res.data.message.content);
         } catch (error) {
             console.error('Error sending message:', error);
