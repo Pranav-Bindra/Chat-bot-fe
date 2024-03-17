@@ -1,13 +1,23 @@
 import { useState } from "react";
 import axios from 'axios';
 
-export const PayLoad = ({setResponse}) => {
+export const PayLoad = ({ setResponse }) => {
     const [text, setText] = useState('');
 
     const sendMessage = async () => {
         try {
-            const res = await axios.post('https://vfb56z3gv6.execute-api.us-east-1.amazonaws.com/chat', { message: text });
-            setResponse(res.data.message.content);
+            const config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'https://vfb56z3gv6.execute-api.us-east-1.amazonaws.com/chat',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: { message: text } // Set the message data
+            };
+
+            const response = await axios.request(config);
+            setResponse(response.data.message.content);
         } catch (error) {
             console.error('Error sending message:', error);
             setResponse('Failed to get a response from the server.'); // Update the state with the error message
@@ -23,15 +33,15 @@ export const PayLoad = ({setResponse}) => {
     return (
         <div className="flex flex-col items-center mt-6">
             <div className="flex justify-between border-2 border-black w-1/2">
-                <input 
+                <input
                     onChange={(e) => setText(e.target.value)}
-                    onKeyDown={handleKeyDown} 
-                    value={text} 
-                    className="w-11/12 p-2" 
+                    onKeyDown={handleKeyDown}
+                    value={text}
+                    className="w-11/12 p-2"
                     placeholder="Ask any question here ex: Give me a resume template"
                 />
-                <button 
-                    onClick={sendMessage} 
+                <button
+                    onClick={sendMessage}
                     className="flex justify-center items-center border-black border-l-2 p-2"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
